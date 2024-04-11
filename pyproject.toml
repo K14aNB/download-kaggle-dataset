@@ -6,7 +6,7 @@ build-backend = 'setuptools.build_meta'
 name = 'download-kaggle-dataset'
 version = '0.1.0'
 description = 'Python script to download Kaggle Dataset using Kaggle API'
-authors = 'K14aNB'
+authors = [{name='K14aNB',email='kirnid4@gmail.com'}]
 license = {text = 'Apache-2.0 license'}
 readme = 'README.md'
 requires-python = '>=3.7'
