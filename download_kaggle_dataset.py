@@ -1,4 +1,5 @@
 import os
+import errno
 from importlib import import_module
 from subprocess import run,CalledProcessError
 from zipfile import ZipFile
@@ -16,19 +17,21 @@ def download(data_src_path:str,colab=False,repo_path=None):
     repo_path:str : Path of local repository to which dataset must be downloaded.
                     default is None
                     This is applicable only for local runtime (when colab=False).
+    
+    Returns:str : directory path where kaggle dataset is downloaded and extracted.
     '''
     # Setup Kaggle api key
     if colab is True:
         userdata=import_module('google.colab.userdata')
         os.environ['KAGGLE_USERNAME'] = userdata.get('KAGGLE_USERNAME')
         os.environ['KAGGLE_KEY'] = userdata.get('KAGGLE_KEY')
-#     else:
-#         active_user = os.path.expanduser('~')
-#         if 'kaggle.json' in os.listdir(os.path.join(active_user,'.kaggle')):
-#             print('Kaggle api credentials present')
-# #         else:
-#             print('Kaggle api credentials not present')
-#             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT),'kaggle.json')
+    else:
+        active_user = os.path.expanduser('~')
+        if os.path.exists(os.path.join(active_user,'.kaggle','kaggle.json')):
+            print('Kaggle api credentials present')
+        else:
+            print('Kaggle api credentials not present')
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT),'kaggle.json')
         
 
 
@@ -54,3 +57,4 @@ def download(data_src_path:str,colab=False,repo_path=None):
     with ZipFile(os.path.join(dpath,'data',zip_filename),'r') as zip:
         zip.extractall(path=os.path.join(dpath,'data'))
     print(f'Kaggle Dataset {data_src_path} is downloaded and extracted at {os.path.join(dpath,"data")}')
+    return os.path.join(dpath,'data')
