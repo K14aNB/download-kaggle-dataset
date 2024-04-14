@@ -51,7 +51,7 @@ def download(data_src_path:str,colab=False,repo_path=None,nb_name=None):
         dpath = repo_path
         if nb_name is not None:
             if os.path.isdir(os.path.join(dpath,'data',nb_name)) is False:
-                os.mkdir(os.path.join(dpath,'data',nb_name))
+                os.makedirs(os.path.join(dpath,'data',nb_name))
             data_path=os.path.join(dpath,'data',nb_name)
         else:
             print('Notebook name is not provided. Default value is None')
