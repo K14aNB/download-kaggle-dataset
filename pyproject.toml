@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "download-kaggle-dataset"
+name = "download_kaggle_dataset"
 version = "0.1.0"
 description = "Python script to download Kaggle Dataset using Kaggle API"
 authors = ["K14aNB"]
