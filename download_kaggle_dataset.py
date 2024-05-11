@@ -67,7 +67,7 @@ def download(data_src_path:str,colab=False,competition=False,repo_path=None,nb_n
         
         if competition is True:
             try:
-                run(['kaggle','competitions','download','-c',data_src_path],check=True)
+                run(['kaggle','competitions','download','-c',data_src_path,'-p',data_path],check=True)
             except CalledProcessError as e2:
                 print(f'{e2.cmd} failed')
         else:
