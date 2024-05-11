@@ -4,7 +4,7 @@ from importlib import import_module
 from subprocess import run,CalledProcessError
 from zipfile import ZipFile
 
-def download(data_src_path:str,colab=False,repo_path=None,nb_name=None):
+def download(data_src_path:str,colab=False,competition=False,repo_path=None,nb_name=None):
     '''
     Takes data_src_path in the form of <kaggle-username>/<dataset-name> 
     and downloads the dataset into colab/local runtime using kaggle api
@@ -14,6 +14,7 @@ def download(data_src_path:str,colab=False,repo_path=None,nb_name=None):
     data_src_path:str : kaggle-username>/<dataset-name>
     colab:bool : Indicates whether currently active environment uses colab runtime or local runtime.
                  default is False which indicates active environment is using local runtime.
+    competition:bool : Indicates whether data is from Kaggle Competition. default is False. 
     repo_path:str : Path of local repository to which dataset must be downloaded.
                     default value is None
                     This is applicable only for local runtime (when colab=False).
@@ -64,10 +65,16 @@ def download(data_src_path:str,colab=False,repo_path=None,nb_name=None):
         except CalledProcessError as e1:
             print(f'{e1.cmd} failed')
         
-        try:
-            run(['kaggle','datasets','download',data_src_path,'-p',data_path],check=True)
-        except CalledProcessError as e2:
-            print(f'{e2.cmd} failed')
+        if competition is True:
+            try:
+                run(['kaggle','competitions','download','-c',data_src_path],check=True)
+            except CalledProcessError as e2:
+                print(f'{e2.cmd} failed')
+        else:
+            try:
+                run(['kaggle','datasets','download',data_src_path,'-p',data_path],check=True)
+            except CalledProcessError as e3:
+                print(f'{e3.cmd} failed')
             
         zip_filename = os.listdir(data_path)[0] 
         with ZipFile(os.path.join(data_path,zip_filename),'r') as zip:
